@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>北京交通大学信息管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+    <meta name="author" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <script src="/static/lib/jquery/jquery.js"></script>
+    <script src="/static/lib/jquery/jquery.query-2.1.7.js"></script>
+    <script language="javascript" type="text/javascript" src="/static/js/my.js"></script>
+    <link href="/static/css/common.css" rel="stylesheet">
+    <link href="/static/css/mainstyle.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="wrap">
+    <div id="hd" class="header">
+        <h1>北京交通大学信息管理系统</h1>
+        <ul class="head-nav clearfix">
+        </ul>
+
+    </div>
+    <div id="bd" class="bodyer clearfix">
+        <h1 align="center">数据录入</h1>
+
+
+        <script type="text/javascript" src="/static/lib/jquery/jquery.query-2.1.7.js"></script>
+        <div class="content clearfix">
+
+            <a class="section" href="{% url 'xdh' %}">返回</a>
+            <br>
+
+            <form method="post" id="user_content">
+                {% csrf_token %}
+                <table class="table">
+                    <tr>
+                        <th width='20%'>项目</th>
+                        <th width='80%'></th>
+                    </tr>
+
+
+                        {% if  data %}
+
+  {% for d in data %}
+                        <tr>
+                            <td><label for="id_name">姓名:</label></td>
+                                <td><input style="width: 97%" id="id_name" maxlength="16" name="xingming" type="text"
+                                           value={{ d.xingming }}></td>
+
+                        </tr>
+                        <tr>
+                            <td><label for="id_yuan">院:</label></td>
+                            <td><input id="id_yuan" maxlength="254" name="yuan" type="text" value={{ d.yuan }}></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_xi">系:</label></td>
+                            <td><input id="id_xi" maxlength="254" name="xi" type="text" value={{ d.xi }}></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_zhuanye">专业:</label></td>
+                            <td><input id="id_zhuanye" maxlength="254" name="zhuanye" type="text"
+                                       value={{ d.zhuanye }}
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_erjizhuanye">二级专业:</label></td>
+                            <td><input id="id_erjizhuanye" maxlength="254" name="erjizhuanye" type="text"
+                                       value={{ d.erjizhuanye }}></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_zhiwu">职务:</label></td>
+                            <td><input id="id_zhiwu" maxlength="254" name="zhiwu" type="text"
+
+                                       value={{ d.zhiwu }}
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_zhize">职责:</label></td>
+                            <td><input id="id_zhize" maxlength="254" name="zhize" type="text"
+
+                                       value={{ d.zhize }}
+                            ></td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="id_dianhua">电话:</label></td>
+                            <td><input id="id_dianhua" maxlength="25" name="dianhua" type="text"
+
+                                       value={{ d.dianhua }}
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_dizhi">地址:</label></td>
+                            <td><input id="id_dizhi" maxlength="25" name="dizhi" type="text"
+
+                                       value={{ d.dizhi }}></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_youxiang">邮箱:</label></td>
+                            <td><input id="id_youxiang" maxlength="25" name="youxiang" type="text"
+
+                                       value={{ d.youxiang }}
+                            ></td>
+                            {% endfor %}
+                        {% else %}
+
+                        <tr>
+                            <td><label for="id_name">姓名:</label></td>
+                                <td><input style="width: 97%" id="id_name" maxlength="16" name="xingming" type="text"
+                                        ></td>
+
+                        </tr>
+                        <tr>
+                            <td><label for="id_yuan">院:</label></td>
+                            <td><input id="id_yuan" maxlength="254" name="yuan" type="text" ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_xi">系:</label></td>
+                            <td><input id="id_xi" maxlength="254" name="xi" type="text" ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_zhuanye">专业:</label></td>
+                            <td><input id="id_zhuanye" maxlength="254" name="zhuanye" type="text"
+
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_erjizhuanye">二级专业:</label></td>
+                            <td><input id="id_erjizhuanye" maxlength="254" name="erjizhuanye" type="text"
+                                      ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_zhiwu">职务:</label></td>
+                            <td><input id="id_zhiwu" maxlength="254" name="zhiwu" type="text"
+
+
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_zhize">职责:</label></td>
+                            <td><input id="id_zhize" maxlength="254" name="zhize" type="text"
+
+
+                            ></td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="id_dianhua">电话:</label></td>
+                            <td><input id="id_dianhua" maxlength="25" name="dianhua" type="text"
+
+
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_dizhi">地址:</label></td>
+                            <td><input id="id_dizhi" maxlength="25" name="dizhi" type="text"
+
+                                      ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id_youxiang">邮箱:</label></td>
+                            <td><input id="id_youxiang" maxlength="25" name="youxiang" type="text"
+
+
+                            ></td>
+
+                        {% endif %}
+                        </tr>
+
+
+                    <style type="text/css">
+                        input {
+                            width: 97%;
+
+                        }
+
+                    </style>
+                </table>
+
+                {#            新增弹出窗口输入#}
+                {#            <a type="button" value="新增" href="{% url 'tianxie' %}"#}
+                {#            >新增#}
+
+
+                <input type="submit" style="width: 5%;float:right" value="保存" id="idsavedata">
+
+            </form>
+
+
+
+
+
+
+            {% if messages %}
+                <script>
+                    {% for msg in messages %}
+                        alert('{{ msg.message }}');
+                    {% endfor %}
+                </script>
+            {% endif %}
+
+
+            {#                <tbody>#}
+            {##}
+            {#                </tbody>#}
+
+
+            <script language="javascript" type="text/javascript" src="/static/js/common.js"></script>
+
+        </div>
+
+
+    </div>
+    <div id="ft" class="footer"> 管理员邮箱 mis@bjtu.edu.cn<br>
+        版权所有： 北京交通大学信息中心 Copyright 2002-2018
+    </div>
+</div>
+
+
+</body>
+</html>
+

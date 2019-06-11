@@ -1,0 +1,208 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>北京交通大学信息管理系统</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <meta name="author" content="" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <script  src="/static/lib/jquery/jquery.js"></script>
+        <script  src="/static/lib/jquery/jquery.query-2.1.7.js"></script>
+        <link href="/static/css/common.css" rel="stylesheet" >
+        <link href="/static/css/mainstyle.css" rel="stylesheet">
+        <script>
+            function senddata() {
+                var name = document.getElementById("id_name").value
+                var email = document.getElementById("id_email").value
+                document.getElementById('qyy').sname =name
+                document.getElementById('qyy').smail=email
+								}
+        </script>
+    </head>
+    <body>
+        <div class="wrap">
+            <div id="hd" class="header">
+                <h1>北京交通大学信息管理系统</h1>
+                    <ul class="head-nav clearfix">
+                    <li id='home'><a href="/home/">首页</a></li>
+                    <!-- <li id='faculty'><a href="#">个人主页</a></li> -->
+
+                    </ul>
+                <div class="side-nav">
+                    <ul class="clearfix">
+                        <li><a href="http://www.bjtu.edu.cn" target="__homepage__">学校主页</a></li>
+
+                        <li><a href="/auth/logout/?redirect=http://portal.bjtu.edu.cn">退出系统</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="bd" class="bodyer clearfix">
+
+
+
+
+    <script type="text/javascript" src="/static/lib/jquery/jquery.query-2.1.7.js"></script>
+    <div class="content clearfix">
+        <form method="post" id ="user_content">
+             {% csrf_token %}
+            <tr>
+                <th><label for="id_name"></label></th><td>
+                {% if case_name %}
+                <input id="id_name" maxlength="16" name="name" type="text" value = {{ case_name }}>
+                    {% else %}
+                     <input id="id_name" maxlength="16" name="name" type="text"/>
+                {% endif %}
+
+            </tr>
+
+            <input type="submit" value="查询" >
+{#            传递数据#}
+            <script>
+ $(function() {
+        $("#user_content").submit(function(){
+            var username = $("#id_name").val();
+            var yuanxi = $("#id_yuanxi").val();
+            var dianhua = $("#id_dianhua").val()
+            $(this).ajaxSubmit({
+                type:"post",  //提交方式
+                dataType:"text", //数据类型
+                url:"/content/", //请求url
+                data: {
+                'username': username,
+                'yuanxi': yuanxi,
+                'dianhua':dianhua
+                },
+                success:function(data){ //提交成功的回调函数
+                    loadNewContents()
+                    $("#content_value").val("");
+                }
+            });
+            return false; //不刷新页面
+        });
+    });
+</script>
+
+
+
+        </form>
+
+
+<script>
+    function loadNewContents()
+    {
+        var lstContent = $("#lstContents");
+        //lstContent.html("");
+
+        var blog_id = $("#blog_id").val()
+        $(this).ajaxSubmit({
+            type: "post",  //提交方式
+            dataType: "text", //数据类型
+            url: "/allcontent/", //请求url
+            data: {
+                'blog_id': blog_id
+            },
+            success: function (data) { //提交成功的回调函数
+                if(data.length >0)
+                {
+                     $("#lstContents").html(data);
+
+                }
+            }
+        });
+    }
+</script>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width='16%'>院</th>
+                    <th width='14%'>系</th>
+                    <th width='14%'>专业</th>
+                    <th width='14%'>姓名</th>
+                    <th width='14%'>职务</th>
+                    <th width='14%'>电话</th>
+                    <th width='14%'>办公地址</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for data in contacts %}
+                    <tr>
+                        <td>
+                            <a href="?tiaozhuan={{  data.yuan }}" >{{ data.yuan }}</a>
+                        </td>
+                        <td>
+                            <a href="?tiaozhuan={{  data.xi }}" >{{ data.xi }}</a>
+                        </td>
+                        <td>
+                            <a href="?tiaozhuan={{  data.zhuanye }}" >{{ data.zhuanye }}</a>
+                        </td>
+
+                        <td>{{ data.xingming }}</td>
+                        <td>{{ data.zhiwu }}</td>
+                        <td>{{ data.dianhua }}</td>
+                        <td>{{ data.dizhi }}</td>
+                    </tr>
+{% endfor %}
+            </tbody>
+        </table>
+
+        <script language="javascript" type="text/javascript" src="/static/js/common.js"></script>
+
+</div>
+
+{# 分页标签的HTML代码 #}
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?name={{ case_name }}&dianhua={{ case_dianhua }}&yuanxi={{ case_yuanxi }}&page={{ contacts.previous_page_number  }}"  name="qyy"  >前一页</a>
+
+        {% endif %}
+
+        <span class="current" name="page">
+            第 {{ contacts.number }} 页，共{{ contacts.paginator.num_pages }}页
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?name={{ case_name }}&dianhua={{ case_dianhua }}&yuanxi={{ case_yuanxi }}&page={{ contacts.next_page_number }}"  >下一页</a>
+        {% endif %}
+    </span>
+</div>
+{# 分页js #}
+ <script>
+     function senddata() {
+        var name=$("input[name='name']").val();
+        var yuanxi=$("input[name='yuanxi']").val();
+        var dianhua=$("input[name='dianhua']").val();
+        var  url = window.location.href;
+         window.location.href = url + 'p=' +name ;
+
+        alert(window.location.href )
+         alert(name)
+     }
+    function test() {
+        var name=$("input[name='name']").val();
+        var yuanxi=$("input[name='yuanxi']").val();
+        var dianhua=$("input[name='dianhua']").val();
+        var  page = $("input[name='page']").val();
+
+           var  url = window.location.href;
+
+
+
+
+    }
+
+ </script>
+{# 分页标签的HTML代码end #}
+
+</div>
+            <div id="ft" class="footer">管理员邮箱 mis@bjtu.edu.cn<br>
+                版权所有： 北京交通大学信息中心 Copyright 2002-2018
+            </div>
+        </div>
+    </body>
+</html>
+
