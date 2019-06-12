@@ -41,3 +41,11 @@ class tongxunlu(models.Model):
     dianhua = models.CharField(max_length=30, null=True)
     dizhi = models.CharField(max_length=30, null=True)
     youxiang = models.CharField(max_length=30, null=True)
+#  系名称  院名称
+class yuan(models.Model):
+    name  =   models.CharField(max_length=30)
+    has_son =  models.CharField(max_length=1, null=True)
+    has_father = models.CharField(max_length=1, null=True)
+    father_name = models.CharField(max_length=30, null=True)
+    son_name = models.CharField(max_length=30, null=True)
+

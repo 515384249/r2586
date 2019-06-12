@@ -19,13 +19,13 @@ from testmodle import views
 urlpatterns = [
     path('', views.mylogin, name="mylogin"),
     path('admin/', admin.site.urls),
-    path('cdh/', views.cdh),
+    path('cdh/', views.cdh,name = "cdh"),
     path('xdh/', views.xdh,name = "xdh"),
     path('comments_upload/', views.comments_upload, name="comments_upload"),
     path('mylogin/', views.mylogin, name="mylogin"),
     path('tianxie/', views.tianxie),
     path('tianxie/<param>/', views.tianxie, name="tianxie"),
     path('mylogout', views.mylogout,name ="mylogout"),
+    path('kjfs_search/', views.kjfs_search, name="kjfs_search"),
     # path('chaxunextend/', views.chaxunextend),
-
 ]

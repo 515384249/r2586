@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET
 from django.db.models import Q
 
+
 # from django.views.decorators.csrf import csrf_exempt
 # @csrf_exempt
 
@@ -23,11 +24,15 @@ def mylogout(request):
         pass
     return render(request, 'mylogin.html')
 
+
 def mylogin(request):
     context = {}
     if request.method == 'POST':
         username = request.POST.get('username')
         pwd = request.POST.get('password')
+    # if request.method == 'GET':
+    #     username = request.GET.get('username')
+    #     pwd = request.GET.get('password')
         user = authenticate(request, username=username, password=pwd)
         if user:
 
@@ -37,11 +42,37 @@ def mylogin(request):
             return redirect(reverse('xdh'))
         else:
             context = {
-                'msg' : "密码错误"
+                'msg': "密码错误"
             }
             return redirect(reverse('mylogin'))
     else:
         return render(request, 'mylogin.html', context)
+
+
+def kjfs_search(request):
+    context = {}
+    if request.method == 'POST':
+        print("收到post")
+        type = request.POST.get('type')  # 测试是否能够接收到前端发来的name字段
+        print(type)
+        a = request.POST.get('data')  # 测试是否能够接收到前端发来的name字段
+
+        b=a.strip(" ")
+
+        if (type == "kjjs"):
+
+            data = models.tongxunlu.objects.filter(yuan=b)
+            # t1 = loader.get_template('tianxie.html')
+            # context = RequestContext(request, {'data': data})
+            # return HttpResponse(t1.render(context))
+            print("ccccc")
+
+            print(data)
+            json_data = serializers.serialize('json', data)
+            print(json_data)
+            return HttpResponse(json_data)
+    else:
+        return HttpResponse("<h1>test</h1>")
 
 
 
@@ -74,6 +105,7 @@ def comments_upload(request):
             # return HttpResponse(t1.render(context))
 
             json_data = serializers.serialize('json', data)
+
             return HttpResponse(json_data)
     else:
         return HttpResponse("<h1>test</h1>")
@@ -200,13 +232,17 @@ def cdh(request):
         case_name = request.POST.get('name')
         case_page = request.POST.get('page')
     if case_name:
-      contact_list = models.tongxunlu.objects.filter(
-        Q(xingming__contains = case_name)| Q(yuan__contains = case_name)| Q(xi__contains = case_name) |Q(zhuanye__contains = case_name)| Q(zhiwu__contains = case_name)| Q(dianhua__contains = case_name)| Q(dizhi__contains = case_name)
-         ).values('yuan', 'xi', 'zhuanye', 'xingming', 'zhiwu','dianhua', 'dizhi').order_by('id')
+        contact_list = models.tongxunlu.objects.filter(
+            Q(xingming__contains=case_name) | Q(yuan__contains=case_name) | Q(xi__contains=case_name) | Q(
+                zhuanye__contains=case_name) | Q(zhiwu__contains=case_name) | Q(dianhua__contains=case_name) | Q(
+                dizhi__contains=case_name)
+        ).values('yuan', 'xi', 'zhuanye', 'xingming', 'zhiwu', 'dianhua', 'dizhi').order_by('id')
     else:
-        contact_list = models.tongxunlu.objects.all().values('yuan', 'xi', 'zhuanye', 'xingming', 'zhiwu', 'dianhua', 'dizhi').order_by('id')
+        contact_list = models.tongxunlu.objects.all().values('yuan', 'xi', 'zhuanye', 'xingming', 'zhiwu', 'dianhua',
+                                                             'dizhi').order_by('id')
 
-    paginator = Paginator(contact_list, 50)  # 每页显示25条
+    paginator = Paginator(contact_list, 2200)  # 每页显示25条
+    yuanxi = models.yuan.objects.all().values('name','father_name')
     try:
         contacts = paginator.page(case_page)
     except PageNotAnInteger:
@@ -215,7 +251,7 @@ def cdh(request):
     except EmptyPage:
         contacts = paginator.page(1)
     context = {'contacts': contacts,
-               'case_name': case_name,
+               'case_name': yuanxi,
+               'search_name':case_name,
                }
-    return render(request, 'cdh.html', context)
-
+    return render(request, 'mylogin.html', context)
