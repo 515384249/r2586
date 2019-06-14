@@ -27,5 +27,10 @@ urlpatterns = [
     path('tianxie/<param>/', views.tianxie, name="tianxie"),
     path('mylogout', views.mylogout,name ="mylogout"),
     path('kjfs_search/', views.kjfs_search, name="kjfs_search"),
+    path('ceshi/', views.ceshi, name="ceshi"),
+    path('showtable/', views.showtable, name="showtable"),
+    path('kjfs_edit/', views.kjfs_edit, name="kjfs_edit"),
+    path('fileupload/', views.fileupload, name="fileupload"),
+    path('youjianchaxun/', views.youjianchaxun, name="youjianchaxun")
     # path('chaxunextend/', views.chaxunextend),
 ]

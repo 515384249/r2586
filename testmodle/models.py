@@ -49,3 +49,13 @@ class yuan(models.Model):
     father_name = models.CharField(max_length=30, null=True)
     son_name = models.CharField(max_length=30, null=True)
 
+class ImportFile(models.Model):
+
+    file = models.FileField(upload_to='File')
+    name = models.CharField(max_length=50, verbose_name=u'文件名')
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name

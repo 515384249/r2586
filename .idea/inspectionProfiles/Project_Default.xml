@@ -5,6 +5,8 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="testmodle.*" />
+          <option value="bijiao" />
+          <option value="dajiegou" />
         </list>
       </option>
     </inspection_tool>

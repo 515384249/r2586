@@ -20,7 +20,7 @@
             </div>
 
             <div id="navbar" class="navbar-collapse collapse ">
-                <form class="navbar-form navbar-right" method="post">
+                <form class="navbar-form navbar-right" method="post" action="{% url 'mylogin' %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" placeholder="用户名" class="form-control" name="username">
@@ -37,21 +37,45 @@
     </nav>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron" style="background: url(/static/img/bj.png)">
         <div class="container container-fluid">
+            <div class="btm row">
+                <div class="">
+                    <br>
+                    <h2>电话号码查询</h2>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-offet-2 col-md-8">
+                            <form class="navbar-form form-group-lg" action="{% url 'cdh' %}" method="post">
+                                {% csrf_token %}
+                                {#                            <input type="text" placeholder="请输入查询内容" class="form-control " name="name">#}
+                                {##}
+                                {#                                <button type="submit" class="btn btn-primary btn-lg form-control ">查询</button>#}
+                                {#                                <div class="form-group" style="width: 100%;">#}
+                                {#                                    <input type="text" placeholder="请输入查询内容" class="form-control " name="name" style="width: 80%;">#}
+                                {#                                    <button type="submit" class="btn btn-primary btn-lg form-control ">查询</button>#}
+                                {#                                </div>#}
+                                <ul class="form-group" style="width: 100%;">
+                                    <div class=" col-md-8"><input type="text" placeholder="请输入查询内容"
+                                                                  class="form-control " name="name"
+                                                                  style="width: 100%;"></div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary btn-lg form-control navbar-left"
+                                                style="width: 100%;">查询
+                                        </button>
+                                    </div>
 
-            <br>
-            <form class="navbar-form " action="{% url 'cdh' %}" method="post">
-                {% csrf_token %}
-                <div class="form-group-lg  col-lg-6">
-                    <input type="text" placeholder="请输入查询内容" class="form-control " name="name">
-                    <span class="form-group-btn">
-                                            <button type="submit"
-                                                    class="btn btn-primary  btn-lg  form-control ">GO</button>
-                               </span></div>
+                                </ul>
+                                <h6 class="col-md-offset-1" style="padding: 10px">说明：查询内容可以是 院系，姓名，职务，地址，电话等</h6>
+                            </form>
+                        </div>
+                        <div class="row col-md-2"></div>
+                    </div>
+                </div>
 
 
-            </form>
+            </div>
         </div>
     </div>
 
@@ -60,9 +84,9 @@
         <!-- Example row of columns -->
         <!-- 第一列放表格 -->
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-10 " id="diyilie">
                 <div>
-                    <table class="table" >
+                    <table class="table">
                         <thead>
                         <tr>
                             <th width='16%'>院</th>
@@ -78,16 +102,9 @@
 
                         {% for data in contacts %}
                             <tr>
-                                <td>
-                                    <a href="?tiaozhuan={{ data.yuan }}">{{ data.yuan }}</a>
-                                </td>
-                                <td>
-                                    <a href="?tiaozhuan={{ data.xi }}">{{ data.xi }}</a>
-                                </td>
-                                <td>
-                                    <a href="?tiaozhuan={{ data.zhuanye }}">{{ data.zhuanye }}</a>
-                                </td>
-
+                                <td>{{ data.yuan }}</td>
+                                <td>{{ data.xi }}</td>
+                                <td>{{ data.zhuanye }}</td>
                                 <td>{{ data.xingming }}</td>
                                 <td>{{ data.zhiwu }}</td>
                                 <td>{{ data.dianhua }}</td>
@@ -105,34 +122,34 @@
 
             </div>
 
-            <div class="col-md-2 sidebar-offcanvas" id="sidebar">
+            <div class="col-md-2 sidebar-offcanvas" id="sidebar" style="background-color: #95999c; height:80%">
                 <h4>单位列表</h4>
-   <div class="list-group row pre-scrollable">
-         {%for data in case_name %}
-       <button  class="list-group-item" > {{ data.name }} </button>
-               {% endfor %}
-          </div>
+                <div class="list-group row pre-scrollable">
+                    {% for data in case_name %}
+                        <button class="list-group-item"> {{ data.name }} </button>
+                    {% endfor %}
+                </div>
             </div>
 
         </div>
 
-{#        <div class="pagination">#}
-{#    <span class="step-links">#}
-{#        {% if contacts.has_previous %}#}
-{#            <a href="?name={{ search_name }}&page={{ contacts.previous_page_number }}"#}
-{#               name="qyy">前一页</a>#}
-{##}
-{#        {% endif %}#}
-{##}
-{#        <span class="current" name="page">#}
-{#            第 {{ contacts.number }} 页，共{{ contacts.paginator.num_pages }}页#}
-{#        </span>#}
-{##}
-{#        {% if contacts.has_next %}#}
-{#            <a href="?name={{ search_name }}&page={{ contacts.next_page_number }}">下一页</a>#}
-{#        {% endif %}#}
-{#    </span>#}
-{#        </div>#}
+        {#        <div class="pagination">#}
+        {#    <span class="step-links">#}
+        {#        {% if contacts.has_previous %}#}
+        {#            <a href="?name={{ search_name }}&page={{ contacts.previous_page_number }}"#}
+        {#               name="qyy">前一页</a>#}
+        {##}
+        {#        {% endif %}#}
+        {##}
+        {#        <span class="current" name="page">#}
+        {#            第 {{ contacts.number }} 页，共{{ contacts.paginator.num_pages }}页#}
+        {#        </span>#}
+        {##}
+        {#        {% if contacts.has_next %}#}
+        {#            <a href="?name={{ search_name }}&page={{ contacts.next_page_number }}">下一页</a>#}
+        {#        {% endif %}#}
+        {#    </span>#}
+        {#        </div>#}
 
 
         <footer>

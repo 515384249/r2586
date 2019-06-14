@@ -1,215 +1,124 @@
-<!DOCTYPE
-        >
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>北京交通大学信息管理系统</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-    <meta name="author" content=""/>
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <script src="/static/lib/jquery/jquery.js"></script>
-    <script src="/static/lib/jquery/jquery.query-2.1.7.js"></script>
-    <script language="javascript" type="text/javascript" src="/static/js/my.js"></script>
-    <link href="/static/css/common.css" rel="stylesheet">
-    <link href="/static/css/mainstyle.css" rel="stylesheet">
-</head>
-<body>
-<div class="wrap">
-    <div id="hd" class="header">
-        <h1>北京交通大学信息管理系统</h1>
-            <ul class="head-nav clearfix">
-            <li id='home'><a href="/home/">首页</a></li>
-            <!-- <li id='faculty'><a href="#">个人主页</a></li> -->
+{% extends 'base.html' %}
 
-        </ul>
-        <div class="side-nav">
-            <ul class="clearfix">
-                <li><a href="http://www.bjtu.edu.cn" target="__homepage__">学校主页</a></li>
+{% block title %}
+    <title>编辑</title>>
+{% endblock %}
 
-                <li><a href="{% url 'mylogout' %}">退出系统</a></li>
-            </ul>
+{% block body %}
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background: url(/static/img/head_back.png)">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">北京交通大学通讯录</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse ">
+                <form class="navbar-form navbar-right" method="post" action="{% url 'mylogout' %}">
+                    {% csrf_token %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">退出</a></li>
+                    </ul>
+                </form>
+            </div><!--/.navbar-collapse -->
+        </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron" style="background: url(/static/img/bj.png)">
+        <div class="container container-fluid">
+            <div class="btm row">
+                <div class="">
+                    <br>
+                    <h2>电话号码查询</h2>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-offet-2 col-md-8">
+                            <form class="navbar-form form-group-lg" action="{% url 'cdh' %}" method="post">
+                                {% csrf_token %}
+                                <ul class="form-group" style="width: 100%;">
+                                    <div class=" col-md-8"><input type="text" placeholder="请输入查询内容"
+                                                                  class="form-control " name="name"
+                                                                  style="width: 100%;"></div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary btn-lg form-control navbar-left"
+                                                style="width: 100%;">查询
+                                        </button>
+                                    </div>
+
+                                </ul>
+                                <h6 class="col-md-offset-1" style="padding: 10px">说明：查询内容可以是 院系，姓名，职务，地址，电话等</h6>
+                            </form>
+                        </div>
+                        <div class="row col-md-2"></div>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
     </div>
 
-    <div id=" bd" class="bodyer clearfix">
+
+    <div class="container">
+        <!-- Example row of columns -->
+        <!-- 第一列放表格 -->
+        <div class="row">
+            <div class="col-md-10 " id="diyilie">
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width='16%'>院</th>
+                            <th width='14%'>系</th>
+                            <th width='14%'>专业</th>
+                            <th width='14%'>姓名</th>
+                            <th width='14%'>职务</th>
+                            <th width='14%'>电话</th>
+                            <th width='14%'>办公地址</th>
+                        </tr>
+                        </thead>
+                        <tbody id="mytable">
+
+                        {% for data in contacts %}
+                            <tr>
+                                <td>
 
 
-        <script type="text/javascript" src="/static/lib/jquery/jquery.query-2.1.7.js"></script>
-        <div class="content clearfix">
-            <form method="post" id="user_content">
-                {% csrf_token %}
-                <tr>
-                    <th><label for="id_name">姓名:</label></th>
-                    <td>
-                        {% if case_name %}
-                            <input id="id_name" maxlength="16" name="name" type="text"
-                                   value= {{ case_name }}>
-                        {% else %}
-                            <input id="id_name" maxlength="16" name="name" type="text"/>
-                        {% endif %}
-
-                    </td>
-                </tr>
-                <tr>
-
-                    <th><label for="id_yuanxi">院系:</label></th>
-                    <td>
-                        {% if case_yuanxi %}
-                            <input id="id_yuanxi" maxlength="254" name="yuanxi" type="text"
-                                   value={{ case_yuanxi }}  style="width:1000px">
-                            </td></tr>
-                        {% else %}
-                            <input id="id_yuanxi" maxlength="254" name="yuanxi" type="text"/></td></tr>
-                        {% endif %}
-                <tr>
-                    <th><label for="id_dianhua">电话:</label></th>
-                    <td>
-                        {% if case_dianhua %}
-                            <input id="id_dianhua" maxlength="25" name="dianhua" type="text"
-                                   value={{ case_dianhua }}>
-                            </td></tr>
-                        {% else %}
-                            <input id="id_dianhua" maxlength="25" name="dianhua" type="text"/></td></tr>
-                        {% endif %}
-                <input type="submit" value="查询">
-
-                {% csrf_token %}
-                <input type="button" value="新增" id="idnewdata">
-                <input type="button" value="删除" id="iddelect">
-                <input type="button" value="编辑" id="ideditdata">
-            </form>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th width='6%'><input type="checkbox" id="allcheckbox" value=" " onclick="checkall()">
-                    </th>
-                    <th width='14%'>院</th>
-                    <th width='14%'>系</th>
-                    <th width='14%'>专业</th>
-                    <th width='14%'>姓名</th>
-                    <th width='14%'>职务</th>
-                    <th width='14%'>电话</th>
-                    <th width='10%'>办公地址</th>
-                </tr>
-                </thead>
-                <script>
-                    {#复选框全选#}
-
-                    function checkall() {
-
-                        var c = $('#allcheckbox').prop("checked")
-                        if (c) {
-
-                            $("input[name=subbox][type=checkbox]").prop("checked", true);
-                        } else {
-
-                            $("input[name=subbox][type=checkbox]").prop("checked", false);
-                        }
-
-                    }
+                                    {{ data.yuan }}</td>
+                                <td>{{ data.xi }}</td>
+                                <td>{{ data.zhuanye }}</td>
+                                <td>{{ data.xingming }}</td>
+                                <td>{{ data.zhiwu }}</td>
+                                <td>{{ data.dianhua }}</td>
+                                <td>{{ data.dizhi }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
 
-                </script>
-                <br>
-                <script>
-                    {#点击编辑，input变为可以输入#}
-
-                    function edit_f() {
-                        var ele = document.getElementsByClassName("table_td")
-                        for (var i = 0; i > ele.length; i++) {
-                            ele[i].removeAttr("readOnly");
-                            console.log(ele[i].value);
-                        }
+            </div>
+            <div class="col-md-1">
 
 
-                    }
+            </div>
 
-
-                </script>
-                <tbody>
-
-                {% for data in contacts %}
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="subbox" id={{ data.id }}/>
-
-                        </td>
-                        <td>
-
-                            {{ data.yuan }}
-
-
-                        </td>
-                        <td>
-
-                            {{ data.xi }}
-
-                        </td>
-                        <td>
-                            {#                            <a href="?tiaozhuan={{  data.zhuanye }}" >{{ data.zhuanye }}</a>#}
-                            {{ data.zhuanye }}
-
-                        </td>
-
-                        <td>
-                            {{ data.xingming }}
-
-                        </td>
-
-                        <td>
-                            {{ data.zhiwu }}
-
-                        </td>
-                        <td>
-                            {{ data.dianhua }}
-
-                        </td>
-                        <td>
-                            {{ data.dizhi }}
-                        </td>
-                    </tr>
-                    <style type="text/css">
-                        input.table_td {
-                            width: 100px;
-
-                        }
-
-                    </style>
-                {% endfor %}
-                </tbody>
-            </table>
-
-            <script language="javascript" type="text/javascript" src="/static/js/common.js"></script>
+            <div class="col-md-2 sidebar-offcanvas" id="sidebar" style="background-color: #95999c; height:80%">
+                <h4>单位列表</h4>
+                <div class="list-group row pre-scrollable">
+                    {% for data in case_name %}
+                        <button class="list-group-item"> {{ data.name }} </button>
+                    {% endfor %}
+                </div>
+            </div>
 
         </div>
 
-        {# 分页标签的HTML代码 #}
-        <div class="pagination">
-    <span class="step-links">
-        {% if contacts.has_previous %}
-            <a href="?name={{ case_name }}&dianhua={{ case_dianhua }}&yuanxi={{ case_yuanxi }}&page={{ contacts.previous_page_number }}"
-               name="qyy">前一页</a>
 
-        {% endif %}
+        <footer>
+            <p>&copy; 2016 Company, Inc.</p>
+        </footer>
+    </div> <!-- /container -->
 
-        <span class="current" name="page">
-            第 {{ contacts.number }} 页，共{{ contacts.paginator.num_pages }}页
-        </span>
-
-        {% if contacts.has_next %}
-            <a href="?name={{ case_name }}&dianhua={{ case_dianhua }}&yuanxi={{ case_yuanxi }}&page={{ contacts.next_page_number }}">下一页</a>
-        {% endif %}
-    </span>
-        </div>
-    </div>
-    <div id="ft" class="footer"> 管理员邮箱 mis@bjtu.edu.cn<br>
-        版权所有： 北京交通大学信息中心 Copyright 2002-2018
-    </div>
-</div>
-
-
-</body>
-</html>
-
+{% endblock %}
