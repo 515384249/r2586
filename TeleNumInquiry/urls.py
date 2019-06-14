@@ -31,6 +31,6 @@ urlpatterns = [
     path('showtable/', views.showtable, name="showtable"),
     path('kjfs_edit/', views.kjfs_edit, name="kjfs_edit"),
     path('fileupload/', views.fileupload, name="fileupload"),
-    path('youjianchaxun/', views.youjianchaxun, name="youjianchaxun")
+    # path('youjianchaxun/', views.youjianchaxun, name="youjianchaxun")
     # path('chaxunextend/', views.chaxunextend),
 ]

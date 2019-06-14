@@ -46,7 +46,7 @@ def th_type(data):
     elif data.find("办公")>= 0:
         type = "dizhi_th"
     else:
-        type ="th_?"
+        type ="th"
     return type
 
 def td_type(data):
@@ -57,11 +57,11 @@ def td_type(data):
         td_type = 'dianhua'
     if type["shuzi"]>0 and (type["hanzi"] > 0 or type["zimu"] > 0):
         td_type = 'dizhi'
+    if  type["shuzi"]==0 and type["hanzi"] > 1 and type["zimu"] == 0 and  type["hanzi"] < 4:
+        td_type = 'xingming'
     return  td_type
 
-a= "8650"
 
-print(td_type(a))
 
 
 

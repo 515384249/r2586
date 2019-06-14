@@ -1,3 +1,18 @@
+import jieba
+
+
+class CheckData(Object):
+    def __init__(self, yuan, xi, zhuanye,xingming,zhiwu,dianhua,dizhi,youxiang):
+        self.yuan = yuan
+        self.xi = xi
+
+
+        def read_excel(self, excel):
+
+
+
+
+
 
 
 class CellJieGou:
