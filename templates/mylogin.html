@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background: url(/static/img/head_back.png)">
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background: url(/static/img/head_back.png) ;position: relative;margin-bottom: 0px" >
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -16,7 +16,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">北京交通大学通讯录</a>
+                <div >
+                        <img src="/static/img/footer_logo.png"  alt="" />
+
+                </div>
+
             </div>
 
             <div id="navbar" class="navbar-collapse collapse ">
@@ -37,27 +41,12 @@
     </nav>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron" style="background: url(/static/img/bj.png)">
-        <div class="container container-fluid">
-            <div class="btm row">
-                <div class="">
-                    <br>
-                    <h2>电话号码查询</h2>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-offet-2 col-md-8">
+    <div class="jumbotron container " style=" position: relative; margin: auto;background: url(/static/img/bg_02.png) ;width:100%">
+                        <div class=" col-md-8 col-md-offset-2">
                             <form class="navbar-form form-group-lg" action="{% url 'cdh' %}" method="post">
                                 {% csrf_token %}
-                                {#                            <input type="text" placeholder="请输入查询内容" class="form-control " name="name">#}
-                                {##}
-                                {#                                <button type="submit" class="btn btn-primary btn-lg form-control ">查询</button>#}
-                                {#                                <div class="form-group" style="width: 100%;">#}
-                                {#                                    <input type="text" placeholder="请输入查询内容" class="form-control " name="name" style="width: 80%;">#}
-                                {#                                    <button type="submit" class="btn btn-primary btn-lg form-control ">查询</button>#}
-                                {#                                </div>#}
-                                <ul class="form-group" style="width: 100%;">
-                                    <div class=" col-md-8"><input type="text" placeholder="请输入查询内容"
+                                <ul class="form-group" style="width: 100%; " >
+                                    <div class=" col-md-8"><input type="text" placeholder="电话号码查询"
                                                                   class="form-control " name="name"
                                                                   style="width: 100%;"></div>
                                     <div class="col-md-2">
@@ -65,20 +54,21 @@
                                                 style="width: 100%;">查询
                                         </button>
                                     </div>
-
                                 </ul>
-                                <h6 class="col-md-offset-1" style="padding: 10px">说明：查询内容可以是 院系，姓名，职务，地址，电话等</h6>
                             </form>
                         </div>
-                        <div class="row col-md-2"></div>
-                    </div>
-                </div>
-
-
             </div>
-        </div>
-    </div>
+    <style  type="text/css">
+    .mydiv{
+    position: absolute;
+    left: 50%;
+    top:  50%;
+    transform: translate(-50%, -50%);
+}
 
+    </style>
+        </div>
+    </div>        <div class="container ">
 
     <div class="container">
         <!-- Example row of columns -->
@@ -132,8 +122,7 @@
             </div>
 
         </div>
-
-        {#        <div class="pagination">#}
+    {#        <div class="pagination">#}
         {#    <span class="step-links">#}
         {#        {% if contacts.has_previous %}#}
         {#            <a href="?name={{ search_name }}&page={{ contacts.previous_page_number }}"#}
@@ -151,7 +140,12 @@
         {#    </span>#}
         {#        </div>#}
 
-
+           <div class="pagination">
+            <span class="step-links"> {% if contacts.has_previous %}     <a href="?name={{ search_name }}&page={{ contacts.previous_page_number }}"        name="qyy">前一页</a>
+         {% endif %}
+         <span class="current" name="page">     第 {{ contacts.number }} 页，共{{ contacts.paginator.num_pages }}页 </span>
+         {% if contacts.has_next %}     <a href="?name={{ search_name }}&page={{ contacts.next_page_number }}">下一页</a> {% endif %}
+            </span> </div> 
         <footer>
             <p>&copy; 2016 Company, Inc.</p>
         </footer>

@@ -317,7 +317,7 @@
     rowAttributes (row, index) {
       return {}
     },
-    undefinedText: '-',
+    undefinedText: ' ',
     locale: undefined,
     sortable: true,
     sortClass: undefined,

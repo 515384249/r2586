@@ -1,3 +1,12 @@
+$('#myModal').on('hidden.bs.modal', function () {
+  // 执行一些动作...
+    document.getElementById("motaiform").reset();
+     $(this).removeData('bs.modal');
+})
+
+
+
+
 $(function () {
     let $table = $('#ArbetTable');
     let $button = $('#mybtn_add');
@@ -18,7 +27,7 @@ $(function () {
         showColumns: true,
         showPaginationSwitch: false,     //显示切换分页按钮
         showRefresh: true,      //显示刷新按钮
-        clickToSelect: true,  //点击row选中radio或CheckBox
+        clickToSelect: false,  //点击row选中radio或CheckBox
         // columns: [{
         //     checkbox: true
         // },
@@ -109,13 +118,11 @@ $(document).ready(function () {
 
         var myarray = new Array();
         myarray = JSON.stringify($table.bootstrapTable('getSelections'));
-        alert(myarray)
         // var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
         $.ajax({
 
             type: "POST",
             data: {
-
                 "type": "save",
                 "data": myarray,
             },
@@ -124,8 +131,10 @@ $(document).ready(function () {
 
             dataType: "html",
             success: function (result) {
-                alert("tiaozhuan");
-                window.location.reload()
+                alert("tiaozhuan- table");
+                // window.location.reload()
+   window.location.href= '/ceshi/'
+
             },
             error: function () {
                 alert("false");
@@ -190,8 +199,13 @@ $(document).ready(function () {
 
             dataType: "html",
             success: function (result) {
-                alert("tiaozhuan");
-                window.location.reload()
+                alert("tiaozhuan-shanchu");
+
+
+                 window.location.href= '/ceshi/'
+
+                //document.getElementById("motaiform").reset();
+
             },
             error: function () {
                 alert("false");
@@ -224,45 +238,45 @@ $(document).ready(function () {
 // 原文：https://blog.csdn.net/dizuncainiao/article/details/81742971
 // 版权声明：本文为博主原创文章，转载请附上博文链接！
 
-function SaveImport() {
-
-            var list = [];//构造集合对象
-            var rows = $import.bootstrapTable('getSelections');
-            for (var i = 0; i < rows.length; i++) {
-                list.push({
-                    'Name': rows[i].Name, 'Mobile': rows[i].Mobile, 'Email': rows[i].Email, 'Homepage': rows[i].Homepage,
-                    'Hobby': rows[i].Hobby, 'Gender': rows[i].Gender, 'Age': rows[i].Age, 'BirthDate': rows[i].BirthDate,
-                    'Height': rows[i].Height, 'Note': rows[i].Note
-                });
-            }
-
-            if (list.length == 0) {
-                showToast("请选择一条记录", "warning");
-                return;
-            }
-
-            var postData = { 'list': list };//可以增加其他参数，如{ 'list': list, 'Rucanghao': $("#Rucanghao").val() };
-            postData = JSON.stringify(postData);
-
-            $.ajax({
-                url: '/TestUser/SaveExcelData',
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json;charset=utf-8',
-                traditional: true,
-                success: function (data) {
-                    if (data.Success) {
-                        //保存成功  1.关闭弹出层，2.清空记录显示 3.刷新主列表
-                        showToast("保存成功");
-
-                        $("#import").modal("hide");
-                        $(bodyTag).html("");
-                        Refresh();
-                    }
-                    else {
-                        showToast("保存失败:" + data.ErrorMessage, "error");
-                    }
-                },
-                data: postData
-            });
-        }
+// function SaveImport() {
+//
+//             var list = [];//构造集合对象
+//             var rows = $import.bootstrapTable('getSelections');
+//             for (var i = 0; i < rows.length; i++) {
+//                 list.push({
+//                     'Name': rows[i].Name, 'Mobile': rows[i].Mobile, 'Email': rows[i].Email, 'Homepage': rows[i].Homepage,
+//                     'Hobby': rows[i].Hobby, 'Gender': rows[i].Gender, 'Age': rows[i].Age, 'BirthDate': rows[i].BirthDate,
+//                     'Height': rows[i].Height, 'Note': rows[i].Note
+//                 });
+//             }
+//
+//             if (list.length == 0) {
+//                 showToast("请选择一条记录", "warning");
+//                 return;
+//             }
+//
+//             var postData = { 'list': list };//可以增加其他参数，如{ 'list': list, 'Rucanghao': $("#Rucanghao").val() };
+//             postData = JSON.stringify(postData);
+//
+//             $.ajax({
+//                 url: '/TestUser/SaveExcelData',
+//                 type: 'post',
+//                 dataType: 'json',
+//                 contentType: 'application/json;charset=utf-8',
+//                 traditional: true,
+//                 success: function (data) {
+//                     if (data.Success) {
+//                         //保存成功  1.关闭弹出层，2.清空记录显示 3.刷新主列表
+//                         showToast("保存成功");
+//
+//                         $("#import").modal("hide");
+//                         $(bodyTag).html("");
+//                         Refresh();
+//                     }
+//                     else {
+//                         showToast("保存失败:" + data.ErrorMessage, "error");
+//                     }
+//                 },
+//                 data: postData
+//             });
+//         }

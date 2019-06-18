@@ -10,10 +10,21 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET
 from django.db.models import Q
+from django.http import FileResponse
+from tools import bijiao, excel
 
 
 # from django.views.decorators.csrf import csrf_exempt
 # @csrf_exempt
+
+
+def download(request):
+    file = open('static/xlsx/模板.xlsx', 'rb')
+    response = FileResponse(file)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="xlsx_file.xlsx"'
+    return response
+
 
 def youxiangchaxun(request):
     context = {}
@@ -47,24 +58,76 @@ def youxiangchaxun(request):
                'case_name': yuanxi,
                'search_name': case_name,
                }
-    return render(request,'youxiangchaxun.html',context)
-
-
-
-
+    return render(request, 'youxiangchaxun.html', context)
 
 
 def fileupload(request):
-    if request.method == "POST":  # 请求方法为POST时，进行处理
-        myFile = request.FILES.get("myfile", None)  # 获取上传的文件，如果没有文件，则默认为None
-        if not myFile:
-            return HttpResponse("no files for upload!")
-        destination = open(os.path.join("E:\\upload", myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
-        for chunk in myFile.chunks():  # 分块写入文件
-            destination.write(chunk)
-        destination.close()
-        return HttpResponse("upload over!")
+    context = {}
 
+    if request.method == "POST":  # 请求方法为POST时，进行处理
+            myFile = request.FILES.get("myfile", None)  # 获取上传的文件，如果没有文件，则默认为None
+            if not myFile:
+                return HttpResponse("no files for upload!")
+            destination = open(os.path.join("E:\\upload", myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
+            for chunk in myFile.chunks():  # 分块写入文件
+                destination.write(chunk)
+            destination.close()
+            # 解析xlxs把数据存入数据库
+            tablelist = []
+            rows_list = []
+            rows_list1 = []
+            tablelist = excel.get_tables(os.path.join("E:\\upload", myFile.name))
+            # 获得所有电话
+            cell = dict()
+            cells = []
+            for i in tablelist:
+                rows_list1 = excel.get_table_rows(i)
+                rows_list.extend(rows_list1)
+                for j in range(0, len(rows_list)):
+                    if rows_list[j][0]:
+                        cell["yuan"] = rows_list[j][0]
+                    elif "yuan" in cell:
+                        del cell["yuan"]
+                    if rows_list[j][1]:
+                        cell["xi"] = rows_list[j][1]
+                    elif "xi" in cell:
+                        del cell["xi"]
+                    if rows_list[j][2]:
+                        cell["zhuanye"] = rows_list[j][2]
+                    elif "zhuanye" in cell:
+                        del cell["zhuanye"]
+                    if rows_list[j][3]:
+                        cell["xingming"] = rows_list[j][3]
+                    elif "xingming" in cell:
+                        del cell["xingming"]
+                    if rows_list[j][4]:
+                        cell["zhiwu"] = rows_list[j][4]
+                    elif "zhiwu" in cell:
+                        del cell["zhiwu"]
+                    if rows_list[j][5]:
+                        cell["dianhua"] = rows_list[j][5]
+                    elif "dianhua" in cell:
+                        del cell["dianhua"]
+                    if rows_list[j][6]:
+                        cell["dizhi"] = rows_list[j][6]
+                    elif "dizhi" in cell:
+                        del cell["dizhi"]
+                    if rows_list[j][7]:
+                        cell["youxiang"] = rows_list[j][7]
+                    elif "youxiang" in cell:
+                        del cell["youxiang"]
+                    try:
+                        models.tongxunlu.objects.create(**cell)
+                    except:
+                        return HttpResponse("excel文件格式不正确!")
+                    models.tongxunlu.objects.filter(zhuanye="专业").delete()
+                    models.tongxunlu.objects.filter(yuan="院/单位").delete()
+    context = {
+            "data": "保存成功",
+        }
+
+    # return HttpResponse("wanc!")
+    return render(request, 'ceshi.html', context)
 
 
 def showtable(request):
@@ -130,7 +193,7 @@ def kjfs_search(request):
         a = request.POST.get('data')  # 测试是否能够接收到前端发来的name字段
         b = a.strip(" ")
         if (type == "kjjs"):
-            data = models.tongxunlu.objects.filter(yuan=b).values('id', 'yuan', 'xi', 'zhuanye', 'xingming', 'zhiwu',
+            data = models.tongxunlu.objects.filter(yuan__contains=b).values('id', 'yuan', 'xi', 'zhuanye', 'xingming', 'zhiwu',
                                                                   'dianhua', 'dizhi')
             print("ccccc")
             print(data)
@@ -146,24 +209,26 @@ def kjfs_edit(request):
     if request.method == 'POST':
 
         type = request.POST.get('type')  # 测试是否能够接收到前端发来的name字段
-        print(type)
-
         a = request.POST.get('data')  # 测试是否能够接收到前端发来的name字段
         c = json.loads(a)
-        # print(c[0].zhiwu)
+        print(c)
         if (type == 'save'):
-            for i in c:
-                if (models.tongxunlu.objects.filter(id=i['id']).exists()):
-                    print("updata")
-                    b = i['id']
-                    del i['id']
-                    del i['state']
-                    models.tongxunlu.objects.filter(id=b).update(**i)
-                else:
-                    print("new")
-                    del i['id']
-                    del i['state']
-                    models.tongxunlu.objects.create(**i)
+            if( "id" in c):
+                for i in c:
+                    if (models.tongxunlu.objects.filter(id=i["id"]).exists()):
+                        print("updata")
+                        b = i['id']
+                        del i['id']
+                        del i['state']
+                        models.tongxunlu.objects.filter(id=b).update(**i)
+                    else:
+                        print("new")
+                        del i['id']
+                        del i['state']
+                        models.tongxunlu.objects.create(**i)
+            else:
+                pass
+
         elif (type == 'del'):
             for i in c:
                 models.tongxunlu.objects.filter(id=i['id']).delete()
